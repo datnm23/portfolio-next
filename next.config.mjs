@@ -5,8 +5,6 @@ const nextConfig = {
     images: {
         unoptimized: true,
     },
-    // Disable Turbopack to avoid memory issues
-    turbo: false,
 };
 
 export default nextConfig;
