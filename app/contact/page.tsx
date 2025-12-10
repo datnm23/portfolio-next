@@ -12,7 +12,7 @@ import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { toast } from "sonner";
 
 export default function Contact() {
-    const { language } = useLanguage();
+    const { language, t } = useLanguage();
     const { theme, toggleTheme, switchable } = useTheme();
     const [formData, setFormData] = useState({
         name: "",
@@ -22,52 +22,8 @@ export default function Contact() {
     });
     const [isLoading, setIsLoading] = useState(false);
 
-    const translations = {
-        vi: {
-            about: "Giới thiệu",
-            portfolio: "Portfolio",
-            contact: "Liên hệ",
-            back: "Quay lại",
-            title: "Liên hệ với tôi",
-            description: "Bạn có câu hỏi hoặc muốn thảo luận về dự án? Hãy gửi tin nhắn cho tôi, tôi sẽ phản hồi trong vòng 24 giờ.",
-            name: "Tên của bạn",
-            email: "Email",
-            subject: "Chủ đề",
-            message: "Tin nhắn",
-            send: "Gửi tin nhắn",
-            sending: "Đang gửi...",
-            contactInfo: "Thông tin liên hệ",
-            responseTime: "Tôi sẽ cố gắng phản hồi tin nhắn của bạn trong vòng 24 giờ.",
-            successMessage: "Tin nhắn đã được gửi thành công!",
-            errorMessage: "Có lỗi xảy ra. Vui lòng thử lại.",
-            phone: "Điện thoại",
-            address: "Địa chỉ",
-            allRightsReserved: "All rights reserved.",
-        },
-        en: {
-            about: "About",
-            portfolio: "Portfolio",
-            contact: "Contact",
-            back: "Back",
-            title: "Contact Me",
-            description: "Do you have questions or want to discuss a project? Send me a message, I'll respond within 24 hours.",
-            name: "Your Name",
-            email: "Email",
-            subject: "Subject",
-            message: "Message",
-            send: "Send Message",
-            sending: "Sending...",
-            contactInfo: "Contact Information",
-            responseTime: "I will try to respond to your message within 24 hours.",
-            successMessage: "Message sent successfully!",
-            errorMessage: "An error occurred. Please try again.",
-            phone: "Phone",
-            address: "Address",
-            allRightsReserved: "All rights reserved.",
-        },
-    };
-
-    const content = translations[language];
+    const ownerName = language === "vi" ? OWNER_NAME : OWNER_NAME_EN;
+    const ownerLocation = language === "vi" ? OWNER_LOCATION : OWNER_LOCATION_EN;
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -81,7 +37,7 @@ export default function Contact() {
         e.preventDefault();
 
         if (!formData.name || !formData.email || !formData.subject || !formData.message) {
-            toast.error(content.errorMessage);
+            toast.error(t('contact.errorMessage'));
             return;
         }
 
@@ -110,7 +66,7 @@ export default function Contact() {
             });
 
             if (response.ok) {
-                toast.success(content.successMessage);
+                toast.success(t('contact.successMessage'));
                 setFormData({
                     name: "",
                     email: "",
@@ -118,11 +74,11 @@ export default function Contact() {
                     message: "",
                 });
             } else {
-                toast.error(content.errorMessage);
+                toast.error(t('contact.errorMessage'));
             }
         } catch (error) {
             console.error("Form submission error:", error);
-            toast.error(content.errorMessage);
+            toast.error(t('contact.errorMessage'));
         } finally {
             setIsLoading(false);
         }
@@ -131,24 +87,24 @@ export default function Contact() {
     return (
         <div className="min-h-screen flex flex-col" suppressHydrationWarning>
             {/* Navigation */}
-            <nav className="sticky top-0 z-50 bg-background border-b border-border/50">
+            <nav className="sticky top-0 z-[100] bg-white dark:bg-slate-900 border-b border-border/50 shadow-sm">
                 <div className="container py-4 flex items-center justify-between">
                     <Link href="/" className="text-xl font-bold text-foreground hover:text-accent transition-smooth">
-                        {language === "vi" ? OWNER_NAME : OWNER_NAME_EN}
+                        {ownerName}
                     </Link>
                     <div className="flex items-center gap-6">
                         <div className="hidden md:flex gap-6">
                             <Link href="/" className="text-sm font-medium text-foreground hover:text-accent transition-smooth">
-                                {language === "vi" ? "Trang chủ" : "Home"}
+                                {t('common.home')}
                             </Link>
                             <Link href="/about" className="text-sm font-medium text-foreground hover:text-accent transition-smooth">
-                                {content.about}
+                                {t('common.about')}
                             </Link>
                             <Link href="/portfolio" className="text-sm font-medium text-foreground hover:text-accent transition-smooth">
-                                {language === "vi" ? "Kinh nghiệm" : "Experiences"}
+                                {t('common.experiences')}
                             </Link>
                             <Link href="/contact" className="text-sm font-medium text-accent hover:text-accent/80 transition-smooth">
-                                {content.contact}
+                                {t('common.contact')}
                             </Link>
                         </div>
                         {switchable && toggleTheme && (
@@ -169,16 +125,16 @@ export default function Contact() {
             <main className="flex-1 container py-12 md:py-20">
                 <Link href="/" className="inline-flex items-center gap-2 text-accent hover:opacity-80 transition-smooth mb-8">
                     <ArrowLeft className="h-4 w-4" />
-                    {content.back}
+                    {t('common.backHome')}
                 </Link>
 
                 {/* Header */}
                 <div className="mb-12">
                     <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
-                        {content.title}
+                        {t('contact.title')}
                     </h1>
                     <p className="text-xl text-muted-foreground max-w-2xl">
-                        {content.description}
+                        {t('contact.subtitle')}
                     </p>
                 </div>
 
@@ -188,7 +144,7 @@ export default function Contact() {
                         <form onSubmit={handleSubmit} className="space-y-6">
                             <div>
                                 <label htmlFor="name" className="block text-sm font-semibold text-foreground mb-2">
-                                    {content.name}
+                                    {t('contact.name')}
                                 </label>
                                 <input
                                     type="text"
@@ -198,13 +154,13 @@ export default function Contact() {
                                     onChange={handleChange}
                                     required
                                     className="w-full px-4 py-3 border border-border rounded-lg bg-background text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent"
-                                    placeholder={content.name}
+                                    placeholder={t('contact.namePlaceholder')}
                                 />
                             </div>
 
                             <div>
                                 <label htmlFor="email" className="block text-sm font-semibold text-foreground mb-2">
-                                    {content.email}
+                                    {t('common.email')}
                                 </label>
                                 <input
                                     type="email"
@@ -214,13 +170,13 @@ export default function Contact() {
                                     onChange={handleChange}
                                     required
                                     className="w-full px-4 py-3 border border-border rounded-lg bg-background text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent"
-                                    placeholder={content.email}
+                                    placeholder={t('contact.emailPlaceholder')}
                                 />
                             </div>
 
                             <div>
                                 <label htmlFor="subject" className="block text-sm font-semibold text-foreground mb-2">
-                                    {content.subject}
+                                    {t('contact.subject')}
                                 </label>
                                 <input
                                     type="text"
@@ -230,13 +186,13 @@ export default function Contact() {
                                     onChange={handleChange}
                                     required
                                     className="w-full px-4 py-3 border border-border rounded-lg bg-background text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent"
-                                    placeholder={content.subject}
+                                    placeholder={t('contact.subjectPlaceholder')}
                                 />
                             </div>
 
                             <div>
                                 <label htmlFor="message" className="block text-sm font-semibold text-foreground mb-2">
-                                    {content.message}
+                                    {t('contact.message')}
                                 </label>
                                 <textarea
                                     id="message"
@@ -246,7 +202,7 @@ export default function Contact() {
                                     required
                                     rows={6}
                                     className="w-full px-4 py-3 border border-border rounded-lg bg-background text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent resize-none"
-                                    placeholder={content.message}
+                                    placeholder={t('contact.messagePlaceholder')}
                                 />
                             </div>
 
@@ -256,7 +212,7 @@ export default function Contact() {
                                 className="w-full bg-accent text-accent-foreground hover:bg-accent/90 disabled:opacity-50"
                             >
                                 {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                                {isLoading ? content.sending : content.send}
+                                {isLoading ? t('contact.sending') : t('contact.sendMessage')}
                             </Button>
                         </form>
                     </div>
@@ -264,13 +220,13 @@ export default function Contact() {
                     {/* Contact Info */}
                     <aside className="lg:col-span-1">
                         <div className="bg-secondary p-6 rounded-lg border border-border sticky top-24">
-                            <h3 className="text-lg font-bold text-foreground mb-6">{content.contactInfo}</h3>
+                            <h3 className="text-lg font-bold text-foreground mb-6">{t('contact.contactInfo')}</h3>
 
                             <div className="space-y-6">
                                 <div className="flex gap-4">
                                     <Mail className="h-6 w-6 text-accent flex-shrink-0 mt-1" />
                                     <div>
-                                        <p className="text-sm text-muted-foreground mb-1">{content.email}</p>
+                                        <p className="text-sm text-muted-foreground mb-1">{t('common.email')}</p>
                                         <a href={`mailto:${OWNER_EMAIL}`} className="text-accent hover:opacity-80 transition-smooth break-all">
                                             {OWNER_EMAIL}
                                         </a>
@@ -280,7 +236,7 @@ export default function Contact() {
                                 <div className="flex gap-4">
                                     <Phone className="h-6 w-6 text-accent flex-shrink-0 mt-1" />
                                     <div>
-                                        <p className="text-sm text-muted-foreground mb-1">{content.phone}</p>
+                                        <p className="text-sm text-muted-foreground mb-1">{t('common.phone')}</p>
                                         <a href={`tel:${OWNER_PHONE}`} className="text-accent hover:opacity-80 transition-smooth">
                                             {OWNER_PHONE}
                                         </a>
@@ -290,15 +246,15 @@ export default function Contact() {
                                 <div className="flex gap-4">
                                     <MapPin className="h-6 w-6 text-accent flex-shrink-0 mt-1" />
                                     <div>
-                                        <p className="text-sm text-muted-foreground mb-1">{content.address}</p>
-                                        <p className="text-foreground">{language === "vi" ? OWNER_LOCATION : OWNER_LOCATION_EN}</p>
+                                        <p className="text-sm text-muted-foreground mb-1">{t('common.address')}</p>
+                                        <p className="text-foreground">{ownerLocation}</p>
                                     </div>
                                 </div>
                             </div>
 
                             <div className="mt-6 pt-6 border-t border-border">
                                 <p className="text-sm text-muted-foreground">
-                                    {content.responseTime}
+                                    {t('contact.responseTime')}
                                 </p>
                             </div>
                         </div>
@@ -311,7 +267,7 @@ export default function Contact() {
                 <div className="container py-8">
                     <div className="flex flex-col md:flex-row justify-between items-center">
                         <div className="text-sm text-muted-foreground mb-4 md:mb-0">
-                            © 2025 {language === "vi" ? OWNER_NAME : OWNER_NAME_EN}. {content.allRightsReserved}
+                            © 2025 {ownerName}. {t('common.allRightsReserved')}
                         </div>
                     </div>
                 </div>

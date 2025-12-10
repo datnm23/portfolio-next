@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowLeft, ExternalLink, Download, Moon, Sun } from "lucide-react";
+import { ArrowLeft, Moon, Sun } from "lucide-react";
 import { OWNER_NAME, OWNER_NAME_EN, PROJECTS, PORTFOLIO_CATEGORIES } from "@/lib/const";
 import SampleDocuments from "@/components/SampleDocuments";
 import { useState } from "react";
@@ -11,68 +11,38 @@ import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 export default function Portfolio() {
     const [activeCategory, setActiveCategory] = useState<string>("dutoan");
-    const { language } = useLanguage();
+    const { language, t } = useLanguage();
     const { theme, toggleTheme, switchable } = useTheme();
     const filteredProjects = PROJECTS.filter(p => p.category === activeCategory);
 
-    const translations = {
-        vi: {
-            portfolio: "Portfolio",
-            about: "Giới thiệu",
-            contact: "Liên hệ",
-            back: "Quay lại",
-            selectCategory: "Chọn danh mục",
-            projects: "Dự án",
-            sampleDocuments: "Tài liệu mẫu",
-            noProjects: "Chưa có dự án trong danh mục này",
-            viewDetails: "Xem chi tiết",
-            downloadDocument: "Tải tài liệu",
-            previewDocument: "Xem trước",
-            role: "VAI TRÒ",
-            responsibilities: "NHIỆM VỤ CHÍNH",
-            highlights: "ĐIỂM NỔI BẬT",
-            allRightsReserved: "All rights reserved.",
-        },
-        en: {
-            portfolio: "Portfolio",
-            about: "About",
-            contact: "Contact",
-            back: "Back",
-            selectCategory: "Select Category",
-            projects: "Projects",
-            sampleDocuments: "Sample Documents",
-            noProjects: "No projects in this category",
-            viewDetails: "View Details",
-            downloadDocument: "Download Document",
-            previewDocument: "Preview",
-            role: "ROLE",
-            responsibilities: "KEY RESPONSIBILITIES",
-            highlights: "HIGHLIGHTS",
-            allRightsReserved: "All rights reserved.",
-        },
-    };
-
-    const t = translations[language as keyof typeof translations];
+    const ownerName = language === "vi" ? OWNER_NAME : OWNER_NAME_EN;
 
     return (
         <div className="min-h-screen flex flex-col bg-background" suppressHydrationWarning>
             {/* Navigation */}
-            {/* Navigation */}
-            <nav className="sticky top-0 z-50 w-full bg-background/80 backdrop-blur-md border-b border-border/50 supports-[backdrop-filter]:bg-background/60">
+            <nav
+                className="sticky top-0 border-b border-border/50 shadow-md bg-white/50 dark:bg-slate-900/50"
+                style={{
+                    zIndex: 9999,
+                    position: 'sticky',
+                    backdropFilter: 'blur(50px) saturate(180%)',
+                    WebkitBackdropFilter: 'blur(50px) saturate(180%)'
+                }}
+            >
                 <div className="container py-4 flex items-center justify-between">
                     <Link href="/" className="text-xl font-bold text-foreground hover:text-accent transition-smooth">
-                        {language === "vi" ? OWNER_NAME : OWNER_NAME_EN}
+                        {ownerName}
                     </Link>
                     <div className="flex items-center gap-6">
                         <div className="hidden md:flex gap-6">
                             <Link href="/" className="text-sm font-medium text-foreground hover:text-accent transition-smooth">
-                                {language === "vi" ? "Trang chủ" : "Home"}
+                                {t('common.home')}
                             </Link>
-                            <Link href="/about" className="text-sm font-medium text-foreground hover:text-accent transition-smooth">{t.about}</Link>
+                            <Link href="/about" className="text-sm font-medium text-foreground hover:text-accent transition-smooth">{t('common.about')}</Link>
                             <Link href="/portfolio" className="text-sm font-medium text-accent hover:text-accent/80 transition-smooth">
-                                {language === "vi" ? "Kinh nghiệm" : "Experiences"}
+                                {t('common.experiences')}
                             </Link>
-                            <Link href="/contact" className="text-sm font-medium text-foreground hover:text-accent transition-smooth">{t.contact}</Link>
+                            <Link href="/contact" className="text-sm font-medium text-foreground hover:text-accent transition-smooth">{t('common.contact')}</Link>
                         </div>
                         {switchable && toggleTheme && (
                             <button
@@ -89,24 +59,30 @@ export default function Portfolio() {
             </nav>
 
             {/* Hero Section */}
-            <section className="py-16 md:py-24 bg-gradient-to-br from-accent/5 to-background">
+            <section className="py-16 md:py-24 bg-gradient-to-br from-accent/5 to-background" style={{ position: 'relative', zIndex: 1 }}>
                 <div className="container">
                     <div className="flex items-center gap-4 mb-8">
                         <Link href="/" className="p-2 hover:bg-secondary rounded-lg transition-smooth">
                             <ArrowLeft size={24} className="text-accent" />
                         </Link>
-                        <h1 className="text-4xl md:text-5xl font-bold text-foreground">{t.portfolio}</h1>
+                        <h1 className="text-4xl md:text-5xl font-bold text-foreground">{t('portfolio.title')}</h1>
                     </div>
                     <p className="text-lg text-foreground/80 max-w-2xl">
-                        {language === "vi"
-                            ? "Khám phá các dự án nổi bật của tôi trong lĩnh vực bóc tách khối lượng, lập hồ sơ dự thầu, và thanh quyết toán công trình."
-                            : "Explore my featured projects in quantity surveying, bid preparation, and project settlement."}
+                        {t('portfolio.heroDescription')}
                     </p>
                 </div>
             </section>
 
             {/* Category Tabs */}
-            <section className="py-4 bg-background/95 backdrop-blur-sm sticky top-[61px] z-40 border-b border-border shadow-sm">
+            <section
+                className="py-4 sticky top-[65px] border-b border-border shadow-md bg-white/80 dark:bg-slate-900/80"
+                style={{
+                    zIndex: 9998,
+                    position: 'sticky',
+                    backdropFilter: 'blur(50px) saturate(180%)',
+                    WebkitBackdropFilter: 'blur(50px) saturate(180%)'
+                }}
+            >
                 <div className="container">
                     <div className="flex flex-wrap gap-4">
                         {PORTFOLIO_CATEGORIES.map((category) => (
@@ -126,9 +102,9 @@ export default function Portfolio() {
             </section>
 
             {/* Projects Grid */}
-            <section className="py-16 md:py-24 mt-8">
+            <section className="py-16 md:py-24 mt-8" style={{ position: 'relative', zIndex: 1 }}>
                 <div className="container">
-                    <h2 className="text-3xl font-bold mb-12">{t.projects}</h2>
+                    <h2 className="text-3xl font-bold mb-12">{t('portfolio.projects')}</h2>
 
                     {filteredProjects.length > 0 ? (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
@@ -137,7 +113,6 @@ export default function Portfolio() {
                                     key={project.id}
                                     className="group bg-background border-2 border-border rounded-lg overflow-hidden hover:border-accent hover:shadow-xl transition-all duration-300"
                                 >
-                                    {/* Project Header */}
                                     <div className="p-6 border-b border-border bg-secondary/30">
                                         <div className="flex items-start justify-between gap-4 mb-2">
                                             <h3 className="text-xl font-bold text-foreground group-hover:text-accent transition-smooth">
@@ -150,24 +125,21 @@ export default function Portfolio() {
                                         <p className="text-sm text-muted-foreground">{project.location}</p>
                                     </div>
 
-                                    {/* Project Body */}
                                     <div className="p-6 space-y-4">
                                         <p className="text-foreground/80">
                                             {language === "vi" ? project.description_vi : project.description_en}
                                         </p>
 
-                                        {/* Role */}
                                         <div>
                                             <p className="text-sm font-semibold text-muted-foreground mb-2">
-                                                {t.role}
+                                                {t('portfolio.role')}
                                             </p>
                                             <p className="text-foreground">{language === "vi" ? project.role_vi : project.role_en}</p>
                                         </div>
 
-                                        {/* Responsibilities */}
                                         <div>
                                             <p className="text-sm font-semibold text-muted-foreground mb-2">
-                                                {t.responsibilities}
+                                                {t('portfolio.responsibilities')}
                                             </p>
                                             <ul className="space-y-1 text-foreground/80">
                                                 {(language === "vi" ? project.responsibilities_vi : project.responsibilities_en).map((resp, idx) => (
@@ -179,11 +151,10 @@ export default function Portfolio() {
                                             </ul>
                                         </div>
 
-                                        {/* Highlights */}
                                         {(language === "vi" ? project.highlights_vi : project.highlights_en).length > 0 && (
                                             <div>
                                                 <p className="text-sm font-semibold text-muted-foreground mb-2">
-                                                    {t.highlights}
+                                                    {t('portfolio.highlights')}
                                                 </p>
                                                 <div className="flex flex-wrap gap-2">
                                                     {(language === "vi" ? project.highlights_vi : project.highlights_en).map((highlight, idx) => (
@@ -203,23 +174,23 @@ export default function Portfolio() {
                         </div>
                     ) : (
                         <div className="text-center py-16">
-                            <p className="text-lg text-muted-foreground">{t.noProjects}</p>
+                            <p className="text-lg text-muted-foreground">{t('portfolio.noProjects')}</p>
                         </div>
                     )}
                 </div>
             </section>
 
             {/* Sample Documents Section */}
-            <section className="py-16 md:py-24 bg-secondary/30">
+            <section className="py-16 md:py-24 bg-secondary/30" style={{ position: 'relative', zIndex: 1 }}>
                 <div className="container">
-                    <h2 className="text-3xl font-bold mb-12">{t.sampleDocuments}</h2>
+                    <h2 className="text-3xl font-bold mb-12">{t('portfolio.sampleDocuments')}</h2>
                     <SampleDocuments category={activeCategory} />
                 </div>
             </section>
 
             {/* Footer */}
             <footer className="py-8 bg-background border-t border-border text-center text-muted-foreground">
-                <p>© 2025 {language === "vi" ? OWNER_NAME : OWNER_NAME_EN}. {t.allRightsReserved}</p>
+                <p>© 2025 {ownerName}. {t('common.allRightsReserved')}</p>
             </footer>
         </div>
     );

@@ -1,0 +1,123 @@
+backend:
+  name: github
+  repo: datnm23/portfolio-next  # Replace with your GitHub username/repo
+  branch: main
+  base_url: https://api.netlify.com  # For OAuth with Netlify Identity (or use custom OAuth)
+
+# Local backend for development (uncomment for local testing)
+# local_backend: true
+
+# Media files configuration
+media_folder: "public/images/uploads"
+public_folder: "/images/uploads"
+
+# Site settings
+site_url: https://datnm23.github.io/portfolio-next
+display_url: https://datnm23.github.io/portfolio-next
+logo_url: /images/logo.png
+
+# Locale for admin interface
+locale: "en"
+
+# Collections (content types)
+collections:
+  # Experiences/Work History
+  - name: "experiences"
+    label: "Work Experiences"
+    folder: "content/experiences"
+    create: true
+    slug: "{{slug}}"
+    format: "json"
+    fields:
+      - { label: "ID", name: "id", widget: "number", required: true }
+      - { label: "Title (Vietnamese)", name: "title_vi", widget: "string" }
+      - { label: "Title (English)", name: "title_en", widget: "string" }
+      - { label: "Company", name: "company", widget: "string" }
+      - { label: "Period", name: "period", widget: "string", hint: "e.g., 11/2023 - 05/2025" }
+      - { label: "Description (Vietnamese)", name: "description_vi", widget: "text" }
+      - { label: "Description (English)", name: "description_en", widget: "text" }
+      - { label: "Responsibilities (Vietnamese)", name: "responsibilities_vi", widget: "list" }
+      - { label: "Responsibilities (English)", name: "responsibilities_en", widget: "list" }
+      - { label: "Order", name: "order", widget: "number", default: 0, hint: "Lower numbers appear first" }
+
+  # Projects
+  - name: "projects"
+    label: "Projects"
+    folder: "content/projects"
+    create: true
+    slug: "{{slug}}"
+    format: "json"
+    fields:
+      - { label: "ID", name: "id", widget: "number", required: true }
+      - { label: "Title (Vietnamese)", name: "title_vi", widget: "string" }
+      - { label: "Title (English)", name: "title_en", widget: "string" }
+      - { label: "Location", name: "location", widget: "string" }
+      - { label: "Year", name: "year", widget: "string", hint: "e.g., 2024-2025" }
+      - { label: "Description (Vietnamese)", name: "description_vi", widget: "text" }
+      - { label: "Description (English)", name: "description_en", widget: "text" }
+      - { label: "Role (Vietnamese)", name: "role_vi", widget: "string" }
+      - { label: "Role (English)", name: "role_en", widget: "string" }
+      - label: "Category"
+        name: "category"
+        widget: "select"
+        options:
+          - { label: "QS (Quantity Surveyor)", value: "qs" }
+          - { label: "Bid Preparation", value: "dutoan" }
+          - { label: "Project Settlement", value: "thanhquyettoan" }
+      - { label: "Responsibilities (Vietnamese)", name: "responsibilities_vi", widget: "list" }
+      - { label: "Responsibilities (English)", name: "responsibilities_en", widget: "list" }
+      - { label: "Highlights (Vietnamese)", name: "highlights_vi", widget: "list" }
+      - { label: "Highlights (English)", name: "highlights_en", widget: "list" }
+      - { label: "Order", name: "order", widget: "number", default: 0 }
+
+  # Sample Documents
+  - name: "documents"
+    label: "Sample Documents"
+    folder: "content/documents"
+    create: true
+    slug: "{{slug}}"
+    format: "json"
+    fields:
+      - { label: "ID", name: "id", widget: "number", required: true }
+      - { label: "Title (Vietnamese)", name: "title_vi", widget: "string" }
+      - { label: "Title (English)", name: "title_en", widget: "string" }
+      - { label: "Description (Vietnamese)", name: "description_vi", widget: "text" }
+      - { label: "Description (English)", name: "description_en", widget: "text" }
+      - { label: "File Name", name: "fileName", widget: "string" }
+      - { label: "File Size", name: "fileSize", widget: "string", hint: "e.g., 848 KB" }
+      - { label: "Type (Vietnamese)", name: "type_vi", widget: "string" }
+      - { label: "Type (English)", name: "type_en", widget: "string" }
+      - label: "Category"
+        name: "category"
+        widget: "select"
+        options:
+          - { label: "QS (Quantity Surveyor)", value: "qs" }
+          - { label: "Bid Preparation", value: "dutoan" }
+          - { label: "Project Settlement", value: "thanhquyettoan" }
+      - { label: "Content Description (Vietnamese)", name: "content_vi", widget: "text" }
+      - { label: "Content Description (English)", name: "content_en", widget: "text" }
+      - { label: "Google Drive ID", name: "googleDriveId", widget: "string" }
+      - { label: "Order", name: "order", widget: "number", default: 0 }
+
+  # Site Settings
+  - name: "settings"
+    label: "Site Settings"
+    files:
+      - label: "Owner Information"
+        name: "owner"
+        file: "content/settings/owner.json"
+        fields:
+          - { label: "Name (Vietnamese)", name: "name_vi", widget: "string" }
+          - { label: "Name (English)", name: "name_en", widget: "string" }
+          - { label: "Email", name: "email", widget: "string" }
+          - { label: "Phone", name: "phone", widget: "string" }
+          - { label: "Location (Vietnamese)", name: "location_vi", widget: "string" }
+          - { label: "Location (English)", name: "location_en", widget: "string" }
+          - { label: "Avatar URL", name: "avatar_url", widget: "image", required: false }
+          - label: "Social Links"
+            name: "social"
+            widget: "object"
+            fields:
+              - { label: "LinkedIn", name: "linkedin", widget: "string", required: false }
+              - { label: "GitHub", name: "github", widget: "string", required: false }
+              - { label: "Facebook", name: "facebook", widget: "string", required: false }

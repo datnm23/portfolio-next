@@ -3,7 +3,6 @@
 import { Download, FileText, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SAMPLE_DOCUMENTS } from "@/lib/const";
-
 import { useLanguage } from "@/contexts/LanguageContext";
 
 interface SampleDocumentsProps {
@@ -11,24 +10,7 @@ interface SampleDocumentsProps {
 }
 
 export default function SampleDocuments({ category = "dutoan" }: SampleDocumentsProps) {
-  const { language } = useLanguage();
-
-  const translations = {
-    vi: {
-      content: "Nội dung",
-      preview: "Xem trước",
-      download: "Tải xuống",
-      noDocuments: "Không có tài liệu cho danh mục này",
-    },
-    en: {
-      content: "Content",
-      preview: "Preview",
-      download: "Download",
-      noDocuments: "No documents in this category",
-    },
-  };
-
-  const t = translations[language];
+  const { language, t } = useLanguage();
 
   const handleDownload = (fileName: string) => {
     const link = document.createElement("a");
@@ -40,7 +22,7 @@ export default function SampleDocuments({ category = "dutoan" }: SampleDocuments
   };
 
   const handlePreview = (googleDriveId: string) => {
-    // Mở file trong Google Sheets Viewer từ Google Drive
+    // Open file in Google Sheets Viewer from Google Drive
     const viewerUrl = `https://docs.google.com/spreadsheets/d/${googleDriveId}/edit?usp=sharing`;
     window.open(viewerUrl, "_blank");
   };
@@ -80,7 +62,7 @@ export default function SampleDocuments({ category = "dutoan" }: SampleDocuments
               {/* Content Info */}
               <div className="mb-4 p-3 bg-background rounded border border-border">
                 <p className="text-xs text-muted-foreground uppercase tracking-wide mb-1">
-                  {t.content}
+                  {t('portfolio.content')}
                 </p>
                 <p className="text-sm text-foreground">
                   {language === "vi" ? doc.content_vi : doc.content_en}
@@ -101,14 +83,14 @@ export default function SampleDocuments({ category = "dutoan" }: SampleDocuments
                   className="flex-1"
                 >
                   <ExternalLink className="h-4 w-4 mr-2" />
-                  {t.preview}
+                  {t('portfolio.preview')}
                 </Button>
                 <Button
                   onClick={() => handleDownload(doc.fileName)}
                   className="flex-1 bg-accent text-accent-foreground hover:bg-accent/90"
                 >
                   <Download className="h-4 w-4 mr-2" />
-                  {t.download}
+                  {t('portfolio.download')}
                 </Button>
               </div>
             </div>
@@ -116,7 +98,7 @@ export default function SampleDocuments({ category = "dutoan" }: SampleDocuments
         </div>
       ) : (
         <div className="text-center py-12 bg-secondary rounded-lg border border-border">
-          <p className="text-muted-foreground">{t.noDocuments}</p>
+          <p className="text-muted-foreground">{t('portfolio.noDocuments')}</p>
         </div>
       )}
     </div>

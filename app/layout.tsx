@@ -18,8 +18,13 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en" suppressHydrationWarning>
-            <body className={`${inter.variable} ${merriweather.variable} font-sans antialiased`} suppressHydrationWarning>
-                <Providers>{children}</Providers>
+            <body className={`${inter.variable} ${merriweather.variable} font-sans antialiased bg-muted/30`} suppressHydrationWarning>
+                <Providers>
+                    {/* Main content wrapper - centered with max-width */}
+                    <div className="min-h-screen max-w-5xl mx-auto bg-background shadow-xl">
+                        {children}
+                    </div>
+                </Providers>
             </body>
         </html>
     );

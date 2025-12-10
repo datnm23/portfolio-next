@@ -8,64 +8,26 @@ import { useTheme } from "@/contexts/ThemeContext";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 export default function Home() {
-    const { language } = useLanguage();
+    const { language, t } = useLanguage();
     const { theme, toggleTheme, switchable } = useTheme();
 
-    const translations = {
-        vi: {
-            home: "Trang chủ",
-            about: "Giới thiệu",
-            experiences: "Kinh nghiệm",
-            contact: "Liên hệ",
-            title: "Kỹ sư Dự toán Xây dựng",
-            subtitle: "Chuyên gia Bóc tách khối lượng & Thanh quyết toán",
-            description: "Chuyên về bóc tách khối lượng, lập hồ sơ dự thầu, và thanh quyết toán công trình. Với hơn 7 năm kinh nghiệm trong lĩnh vực xây dựng cơ sở hạ tầng, dân dụng và công nghiệp.",
-            viewWork: "Xem Portfolio",
-            letsConnect: "Liên hệ ngay",
-            aboutMe: "Giới thiệu",
-            aboutMeHighlight: "về tôi",
-            aboutDescription: "Chuyên về bóc tách khối lượng, lập hồ sơ dự thầu, và thanh quyết toán công trình. Với hơn 7 năm kinh nghiệm trong lĩnh vực xây dựng cơ sở hạ tầng, dân dụng và công nghiệp.",
-            email: "Email",
-            phone: "Điện thoại",
-            address: "Địa chỉ",
-            allRightsReserved: "All rights reserved.",
-        },
-        en: {
-            home: "Home",
-            about: "About",
-            experiences: "Experiences",
-            contact: "Contact",
-            title: "Construction Cost Engineer",
-            subtitle: "Quantity Surveying & Project Settlement Expert",
-            description: "Specialized in quantity surveying, bid preparation, and project settlement. With over 7 years of experience in infrastructure, civil, and industrial construction.",
-            viewWork: "View My Work",
-            letsConnect: "Let's Connect",
-            aboutMe: "About",
-            aboutMeHighlight: "Me",
-            aboutDescription: "Recent business graduate passionate about marketing, travel, and design. I love creating campaigns that connect brands with their audiences in meaningful ways.",
-            email: "Email",
-            phone: "Phone",
-            address: "Address",
-            allRightsReserved: "All rights reserved.",
-        },
-    };
-
-    const t = translations[language as keyof typeof translations];
+    const ownerName = language === "vi" ? OWNER_NAME : OWNER_NAME_EN;
+    const ownerLocation = language === "vi" ? OWNER_LOCATION : OWNER_LOCATION_EN;
 
     return (
         <div className="min-h-screen flex flex-col bg-background" suppressHydrationWarning>
             {/* Navigation */}
-            <nav className="sticky top-0 z-50 bg-background border-b border-border/50">
+            <nav className="sticky top-0 z-[100] bg-white dark:bg-slate-900 border-b border-border/50 shadow-sm">
                 <div className="container py-4 flex items-center justify-between">
                     <Link href="/" className="text-xl font-bold text-foreground hover:text-accent transition-smooth">
-                        {language === "vi" ? OWNER_NAME : OWNER_NAME_EN}
+                        {ownerName}
                     </Link>
                     <div className="flex items-center gap-6">
                         <div className="hidden md:flex gap-6">
-                            <Link href="/" className="text-sm font-medium text-accent hover:text-accent/80 transition-smooth">{t.home}</Link>
-                            <Link href="/about" className="text-sm font-medium text-foreground hover:text-accent transition-smooth">{t.about}</Link>
-                            <Link href="/portfolio" className="text-sm font-medium text-foreground hover:text-accent transition-smooth">{t.experiences}</Link>
-                            <Link href="/contact" className="text-sm font-medium text-foreground hover:text-accent transition-smooth">{t.contact}</Link>
+                            <Link href="/" className="text-sm font-medium text-accent hover:text-accent/80 transition-smooth">{t('common.home')}</Link>
+                            <Link href="/about" className="text-sm font-medium text-foreground hover:text-accent transition-smooth">{t('common.about')}</Link>
+                            <Link href="/portfolio" className="text-sm font-medium text-foreground hover:text-accent transition-smooth">{t('common.experiences')}</Link>
+                            <Link href="/contact" className="text-sm font-medium text-foreground hover:text-accent transition-smooth">{t('common.contact')}</Link>
                         </div>
                         {switchable && toggleTheme && (
                             <button
@@ -88,13 +50,13 @@ export default function Home() {
                         {/* Left Column - Text Content */}
                         <div className="space-y-6 order-2 lg:order-1">
                             <h1 className="text-5xl md:text-6xl font-bold text-foreground leading-tight">
-                                {language === "vi" ? OWNER_NAME : OWNER_NAME_EN}
+                                {ownerName}
                             </h1>
                             <p className="text-2xl md:text-3xl font-semibold text-foreground">
-                                {t.title}
+                                {t('home.title')}
                             </p>
                             <p className="text-lg text-muted-foreground leading-relaxed">
-                                {t.description}
+                                {t('home.description')}
                             </p>
 
                             {/* Social Links */}
@@ -146,11 +108,11 @@ export default function Home() {
                             {/* CTA Buttons */}
                             <div className="flex flex-col sm:flex-row gap-4 pt-4">
                                 <Link href="/portfolio" className="min-h-[48px] px-6 py-3 bg-primary text-primary-foreground rounded-lg font-semibold hover:opacity-90 transition-smooth flex items-center justify-center gap-2">
-                                    {t.viewWork}
+                                    {t('home.viewWork')}
                                     <ArrowRight size={18} />
                                 </Link>
                                 <Link href="/contact" className="min-h-[48px] px-6 py-3 border-2 border-primary text-primary rounded-lg font-semibold hover:bg-primary/5 transition-smooth flex items-center justify-center">
-                                    {t.letsConnect}
+                                    {t('home.letsConnect')}
                                 </Link>
                             </div>
                         </div>
@@ -163,7 +125,7 @@ export default function Home() {
                                 {/* Profile image */}
                                 <img
                                     src={AVATAR_URL}
-                                    alt={language === "vi" ? OWNER_NAME : OWNER_NAME_EN}
+                                    alt={ownerName}
                                     className="relative w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 rounded-full object-cover border-4 border-accent/30 shadow-2xl"
                                 />
                             </div>
@@ -177,10 +139,10 @@ export default function Home() {
                 <div className="container">
                     <div className="max-w-3xl mx-auto text-center space-y-6">
                         <h2 className="text-4xl md:text-5xl font-bold">
-                            {t.aboutMe} <span className="text-accent">{t.aboutMeHighlight}</span>
+                            {t('home.aboutMe')} <span className="text-accent">{t('home.aboutMeHighlight')}</span>
                         </h2>
                         <p className="text-lg text-muted-foreground leading-relaxed">
-                            {t.aboutDescription}
+                            {t('home.aboutDescription')}
                         </p>
                     </div>
                 </div>
@@ -195,7 +157,7 @@ export default function Home() {
                                 <Mail className="text-accent" size={24} />
                             </div>
                             <div suppressHydrationWarning>
-                                <p className="text-sm text-muted-foreground mb-1">{t.email}</p>
+                                <p className="text-sm text-muted-foreground mb-1">{t('common.email')}</p>
                                 <a href={`mailto:${OWNER_EMAIL}`} className="font-semibold text-foreground hover:text-accent transition-smooth">
                                     {OWNER_EMAIL}
                                 </a>
@@ -206,7 +168,7 @@ export default function Home() {
                                 <Phone className="text-accent" size={24} />
                             </div>
                             <div suppressHydrationWarning>
-                                <p className="text-sm text-muted-foreground mb-1">{t.phone}</p>
+                                <p className="text-sm text-muted-foreground mb-1">{t('common.phone')}</p>
                                 <a href={`tel:${OWNER_PHONE}`} className="font-semibold text-foreground hover:text-accent transition-smooth">
                                     {OWNER_PHONE}
                                 </a>
@@ -217,9 +179,9 @@ export default function Home() {
                                 <MapPin className="text-accent" size={24} />
                             </div>
                             <div suppressHydrationWarning>
-                                <p className="text-sm text-muted-foreground mb-1">{t.address}</p>
+                                <p className="text-sm text-muted-foreground mb-1">{t('common.address')}</p>
                                 <p className="font-semibold text-foreground">
-                                    {language === "vi" ? OWNER_LOCATION : OWNER_LOCATION_EN}
+                                    {ownerLocation}
                                 </p>
                             </div>
                         </div>
@@ -229,7 +191,7 @@ export default function Home() {
 
             {/* Footer */}
             <footer className="py-8 bg-secondary/30 border-t border-border text-center text-muted-foreground">
-                <p className="text-sm">© 2025 {language === "vi" ? OWNER_NAME : OWNER_NAME_EN}. {t.allRightsReserved}</p>
+                <p className="text-sm">© 2025 {ownerName}. {t('common.allRightsReserved')}</p>
             </footer>
         </div>
     );
